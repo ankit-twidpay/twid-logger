@@ -10,11 +10,14 @@ class Logger
 {
     protected $log;
     protected $config;
+    protected $request;
+    protected $channel;
+    protected $metadata = [];
 
     public function __construct($channel = 'default')
     {
         $this->log = new MonologLogger($channel);
-        $this->config = include(__DIR__ . '/config/logging.php'); // Assuming you have a config.php file
+        $this->config = include(__DIR__ . '/config/logging.php');
         $this->channel = $channel;
 
         $channelConfig = $this->config['channels'][$channel];
@@ -22,9 +25,6 @@ class Logger
         if ($channelConfig) {
             $logPath = $channelConfig['path'];
             $logLevel = $channelConfig['level'];
-
-            // Create a StreamHandler with a JSON formatter
-            // $handler = new StreamHandler($logPath, $logLevel);
 
             $handler = new RotatingFileHandler($logPath, 0, $logLevel);
             $handler->setFormatter(new JsonFormatter());
@@ -70,17 +70,31 @@ class Logger
     protected function log($message, $data = [], $channel = null)
     {
         $channelToUse = $channel ?? $this->channel;
+        $data = $this->maskFields($data);
+
+        $data['metadata'] = $this->metadata();
+        $this->maskFields($data);
+
         $this->log->log($channelToUse['level'], $message, $data);
     }
-    protected function maskFields($data)
-    {
-        // Get the fields to mask from the application's configuration
-        $fields = config('your_application.masked_fields'); // Adjust the config path accordingly
 
-        // Mask the specified fields in the $data array
+    protected function metadata()
+    {
+        $defaultLog = $this->config['metadata'];
+        $request = $_REQUEST;
+
+        foreach ($defaultLog as $data) {
+            $this->metadata = $request[$data] ?? null;
+        }
+
+        return $this->maskFields($this->metadata);
+    }
+    protected function maskFields($data = [])
+    {
+        $fields = $this->config['mask'];
+
         foreach ($fields as $field) {
             if (isset($data[$field])) {
-                // Mask the field's value, e.g., replace it with "********"
                 $data[$field] = '********';
             }
         }

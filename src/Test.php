@@ -8,8 +8,8 @@ class Test
 {
     public function test()
     {
-        LoggerFacade::info('I am here',['ab']);
-        LoggerFacade::warning('I am here warning', ['warning']);
+        LoggerFacade::info('I am here', ['mobile_number' => '8005086428', 'custom_field' => 'abc']);
+        LoggerFacade::warning('I am here warning', ['warning', 'mobile_number' => '8005086428']);
         LoggerFacade::critical('I am here critical', ['critical']);
         LoggerFacade::error('I am here error', ['error']);
         LoggerFacade::alert('I am here alert', ['alert']);
