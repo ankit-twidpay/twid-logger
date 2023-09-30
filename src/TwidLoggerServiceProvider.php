@@ -13,10 +13,9 @@ class TwidLoggerServiceProvider extends ServiceProvider
         });
     }
 
+    //php artisan vendor:publish --tag=config
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/../config/common-package.php' => config_path('log.php'),
-        ], 'config');
+        $this->publishes([__DIR__ . '/config/logging.php' => config_path('logging.php')], 'config');
     }
 }

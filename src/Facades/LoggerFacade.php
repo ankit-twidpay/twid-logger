@@ -63,8 +63,8 @@ class LoggerFacade extends Facade
         self::getLogger('debug')->debug($message, $data);
     }
     
-    // protected static function getFacadeAccessor()
-    // {
-    //     return 'twid.logger'; // This should match the binding in your service provider
-    // }
+    protected static function getFacadeAccessor()
+    {
+        return 'twid.logger';
+    }
 }

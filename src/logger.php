@@ -92,7 +92,7 @@ class Logger
         $request = $_REQUEST;
 
         foreach ($defaultLog as $data) {
-            $this->metadata = $request[$data] ?? null;
+            $this->metadata[$data] = $request[$data] ?? null;
         }
 
         return $this->maskFields($this->metadata);
