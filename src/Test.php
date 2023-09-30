@@ -15,6 +15,8 @@ class Test
         LoggerFacade::alert('I am here alert', ['alert']);
         LoggerFacade::inbound('I am here inbound', ['inbound']);
         LoggerFacade::outbound('I am here outbound', ['outbound']);
+        LoggerFacade::debug('I am here error', ['debug']);
+
 
         return 1;
     }

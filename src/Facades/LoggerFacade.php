@@ -56,7 +56,12 @@ class LoggerFacade extends Facade
     public static function outbound($message, $data = [])
     {
         self::getLogger('outbound')->outbound($message, $data);
-    }  
+    }
+
+    public static function debug($message, $data = [])
+    {
+        self::getLogger('debug')->debug($message, $data);
+    }
     
     // protected static function getFacadeAccessor()
     // {

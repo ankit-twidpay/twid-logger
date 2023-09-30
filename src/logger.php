@@ -66,6 +66,14 @@ class Logger
     {
         $this->log($message, $data, $this->config['channels']['outbound']);
     }
+    public function debug($message, $data = [])
+    {
+        if (getenv('APP_ENV') === 'production') {
+            return false;
+        }
+
+        $this->log($message, $data, $this->config['channels']['debug']);
+    }
 
     protected function log($message, $data = [], $channel = null)
     {
