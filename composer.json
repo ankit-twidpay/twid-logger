@@ -23,10 +23,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "ankit-twidpay\\twid\\logger\\TwidLoggerServiceProvider"
+                "twid\\logger\\TwidLoggerServiceProvider"
             ],
             "aliases": {
-                "MyPackage": "ankit-twidpay\\twid\\logger\\Facades\\TLog"
+                "MyPackage": "twid\\logger\\Facades\\TLog"
             }
         }
     }
