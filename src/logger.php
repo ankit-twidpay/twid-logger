@@ -51,9 +51,10 @@ class Logger
         $this->log = new MonologLogger($channel);
 
         // Load configuration settings for the logger.
-        $this->config = include(dirname(__DIR__, 4) . '/config/logging.php');
+        // $this->config = include(dirname(__DIR__, 4) . '/config/logging.php');
+        $this->getConfig();
         $this->channel = $channel;
-        
+
         if (!isset($this->config['channels'][$channel])) {
             throw new \InvalidArgumentException("Channel configuration for '$channel' not found. Please check logging.php"); //@todo check with kushal if this needs to be provided or not
         }
@@ -67,6 +68,15 @@ class Logger
         $handler->setFormatter(new JsonFormatter());
 
         $this->log->pushHandler($handler);
+    }
+
+    private function getConfig()
+    {
+        if (function_exists('app') && app() instanceof \Illuminate\Contracts\Foundation\Application) {
+            $this->config = include(dirname(__DIR__, 4) . '/config/logging.php');
+        } else {
+            $this->config = include(__DIR__ . '/config/logging.php');
+        }
     }
 
     /**

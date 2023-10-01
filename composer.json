@@ -1,6 +1,6 @@
 {
     "name": "ankit-twidpay/twid-logger",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "Centralized logging package for maintaining consistent logging across projects.",
     "type": "library",
     "license": "MIT",
@@ -14,7 +14,9 @@
         "php": "^8.0",
         "monolog/monolog": "^2.5",
         "illuminate/support": "^8.0"
-
+    },
+    "require-dev": {
+    "phpunit/phpunit": "^9.0"
     },
     "autoload": {
         "psr-4": {

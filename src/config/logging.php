@@ -6,7 +6,7 @@ return [
     'channels' => [
         'default' => [
             'driver' => 'daily',
-            'path' => storage_path('').'storage/logs/info.log',
+            'path' => 'storage/logs/info.log',
             'level' => MonologLogger::INFO,
          ],
         'inbound' => [
