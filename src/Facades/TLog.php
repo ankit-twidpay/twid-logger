@@ -30,7 +30,6 @@ class TLog extends Facade
      */
     protected static $loggers = [];
 
-
     /**
      * Get the logger instance based on the channel name.
      *
