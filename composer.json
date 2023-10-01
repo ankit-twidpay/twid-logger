@@ -19,6 +19,16 @@
         "psr-4": {
             "twid\\logger\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ankit-twidpay\\twid\\logger\\TwidLoggerServiceProvider"
+            ],
+            "aliases": {
+                "MyPackage": "ankit-twidpay\\twid\\logger\\Facades\\TLog"
+            }
+        }
     }
 }
 
