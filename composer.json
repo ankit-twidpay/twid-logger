@@ -1,6 +1,6 @@
 {
     "name": "ankit-twidpay/twid-logger",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Centralized logging package for maintaining consistent logging across projects.",
     "type": "library",
     "authors": [
