@@ -26,7 +26,7 @@
                 "twid\\logger\\TwidLoggerServiceProvider"
             ],
             "aliases": {
-                "MyPackage": "twid\\logger\\Facades\\TLog"
+                "TLog": "twid\\logger\\Facades\\TLog"
             }
         }
     }
