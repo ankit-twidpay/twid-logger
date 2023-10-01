@@ -17,7 +17,7 @@ class Logger
     public function __construct($channel = 'default')
     {
         $this->log = new MonologLogger($channel);
-        $this->config = include(__DIR__ . '/config/logging.php');
+        $this->config = include(dirname(__DIR__, 4) . '/config/logging.php');
         $this->channel = $channel;
 
         $channelConfig = $this->config['channels'][$channel];
@@ -32,58 +32,14 @@ class Logger
             $this->log->pushHandler($handler);
         }
     }
-
-    public function info($message, $data = [])
+    public function log($message, $data = [])
     {
-        $this->log($message, $data, $this->config['channels']['info']);
-    }
-
-    public function warning($message, $data = [])
-    {
-        $this->log($message, $data, $this->config['channels']['warning']);
-    }
-
-    public function critical($message, $data = [])
-    {
-        $this->log($message, $data, $this->config['channels']['critical']);
-    }
-
-    public function error($message, $data = [])
-    {
-        $this->log($message, $data, $this->config['channels']['error']);
-    }
-    public function alert($message, $data = [])
-    {
-        $this->log($message, $data, $this->config['channels']['alert']);
-    }
-
-    public function inbound($message, $data = [])
-    {
-        $this->log($message, $data, $this->config['channels']['inbound']);
-    }
-
-    public function outbound($message, $data = [])
-    {
-        $this->log($message, $data, $this->config['channels']['outbound']);
-    }
-    public function debug($message, $data = [])
-    {
-        if (getenv('APP_ENV') === 'production') {
-            return false;
-        }
-
-        $this->log($message, $data, $this->config['channels']['debug']);
-    }
-
-    protected function log($message, $data = [], $channel = null)
-    {
-        $channelToUse = $channel ?? $this->channel;
         $data = $this->maskFields($data);
 
         $data['metadata'] = $this->metadata();
         $this->maskFields($data);
 
-        $this->log->log($channelToUse['level'], $message, $data);
+        return $this->log->log($this->config['channels'][$this->channel]['level'], $message, $data);
     }
 
     protected function metadata()
