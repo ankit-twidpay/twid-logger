@@ -13,8 +13,6 @@ use twid\logger\Logger;
  *
  * @method static bool log(string $message, array $data = []) Log a message with the specified data.
  * @method static bool info(string $message, array $data = []) Log an information message.
- * @method static bool warning(string $message, array $data = []) Log a warning message.
- * @method static bool critical(string $message, array $data = []) Log a critical message.
  * @method static bool error(string $message, array $data = []) Log an error message.
  * @method static bool alert(string $message, array $data = []) Log an alert message.
  * @method static bool inbound(string $message, array $data = []) Log an inbound message.

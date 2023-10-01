@@ -3,6 +3,7 @@
     "version": "0.0.5",
     "description": "Centralized logging package for maintaining consistent logging across projects.",
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
             "name": "Ankit Tiwari",

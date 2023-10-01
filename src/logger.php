@@ -53,11 +53,12 @@ class Logger
         // Load configuration settings for the logger.
         $this->config = include(dirname(__DIR__, 4) . '/config/logging.php');
         $this->channel = $channel;
-        $channelConfig = $this->config['channels'][$channel];
-
-        if (!$channelConfig) {
-            throw new \InvalidArgumentException("Channel configuration for '$channel' not found."); //@todo check with kushal if this needs to be provided or not
+        
+        if (!isset($this->config['channels'][$channel])) {
+            throw new \InvalidArgumentException("Channel configuration for '$channel' not found. Please check logging.php"); //@todo check with kushal if this needs to be provided or not
         }
+
+        $channelConfig = $this->config['channels'][$channel];
 
         $logPath = $channelConfig['path'];
         $logLevel = $channelConfig['level'];
