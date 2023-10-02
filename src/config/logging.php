@@ -50,9 +50,10 @@ return [
             'level' => MonologLogger::ERROR,
         ],
     ],
-    'metadata' => [],
+    'metadata' => ['user_id', 'ip_address'],
     'mask' => [
         'mobile_number',
+        'password'
     ]
 ];
 

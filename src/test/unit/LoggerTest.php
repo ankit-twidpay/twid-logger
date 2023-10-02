@@ -11,17 +11,20 @@ class LoggerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        echo $this->app->basePath();
-        $this->logger = new Logger('test-channel');
+        $this->logger = new Logger('info');
     }
 
     /** @test */
     public function it_logs_a_message()
     {
-        $result = $this->logger->log('Test message', ['key' => 'value']);
+        $message = 'Test message';
+        $data = ['test' => 'verified'];
+        $this->logger->log($message, $data);
 
-        $this->assertTrue($result);
-        // Add more assertions based on your package's behavior
+        $date = date('Y-m-d', strtotime('now'));
+        $logContent = $this->getTheLastLineOfTheFile('storage/logs/info-' . $date . '.log');
+        $this->assertEquals($message, $logContent['message']);
+        $this->assertEquals($data['test'], $logContent['context']['test']);
     }
 
     /** @test */
@@ -33,13 +36,15 @@ class LoggerTest extends TestCase
         new Logger('nonexistent-channel');
     }
 
-    /** @test */
-    public function it_masks_sensitive_fields()
+    public function testItMasksSensitiveFields()
     {
-        $data = ['password' => 'secret', 'credit_card' => '1234567890123456'];
-        $maskedData = $this->logger->maskFields($data);
+        $logger = new Logger();
+        $method = new \ReflectionMethod($logger, 'maskFields');
+        $method->setAccessible(true);
 
-        $this->assertEquals(['password' => '********', 'credit_card' => '************3456'], $maskedData);
+        $result = $method->invoke($logger, ['password' => 'secret']);
+
+        $this->assertEquals(['password' => '********'], $result);
     }
 
     /** @test */
@@ -48,7 +53,11 @@ class LoggerTest extends TestCase
         // Mocking $_REQUEST for testing
         $_REQUEST = ['user_id' => 123, 'ip_address' => '127.0.0.1'];
 
-        $metadata = $this->logger->metadata();
+        $logger = new Logger();
+        $method = new \ReflectionMethod($logger, 'metadata');
+        $method->setAccessible(true);
+
+        $metadata = $method->invoke($logger);    
 
         $this->assertEquals(['user_id' => 123, 'ip_address' => '127.0.0.1'], $metadata);
     }
@@ -59,13 +68,29 @@ class LoggerTest extends TestCase
         // Mocking $_REQUEST for testing
         $_REQUEST = ['user_id' => 123, 'ip_address' => '127.0.0.1'];
 
-        $result = $this->logger->log('Test message with metadata');
+        $this->logger->log('Test message with metadata');
 
-        $this->assertTrue($result);
-        // Add more assertions based on your package's behavior
+        $date = date('Y-m-d', strtotime('now'));
+        $logContent = $this->getTheLastLineOfTheFile('storage/logs/info-' . $date . '.log');
+
+        $this->assertEquals($_REQUEST['ip_address'], $logContent['context']['metadata']['ip_address']);
+        $this->assertEquals($_REQUEST['user_id'], $logContent['context']['metadata']['user_id']);
     }
 
-    // Add more test methods for other functionalities
+    public function getTheLastLineOfTheFile($path)
+    {
+        $file = new \SplFileObject($path);
+
+        $file->seek(PHP_INT_MAX);
+        $lastLineNumber = $file->key() ? ($file->key() - 1)  : 0;
+
+        // Seek to the beginning of the last line
+        $file->seek($lastLineNumber);
+        $lastLine = $file->current();
+
+        return json_decode($lastLine, true);
+    }
+
 
     protected function tearDown(): void
     {

@@ -50,8 +50,6 @@ class Logger
     {
         $this->log = new MonologLogger($channel);
 
-        // Load configuration settings for the logger.
-        // $this->config = include(dirname(__DIR__, 4) . '/config/logging.php');
         $this->getConfig();
         $this->channel = $channel;
 

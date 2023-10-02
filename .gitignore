@@ -1,2 +1,6 @@
 storage
 vendor
+
+# IDE specific
+/.idea
+/.vscode
